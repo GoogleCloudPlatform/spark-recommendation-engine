@@ -1,0 +1,30 @@
+<md-grid-list
+  md-cols="3" 
+  md-cols-xs="2"
+  md-cols-md="4"
+  md-cols-gt-md="5"
+  md-row-height="8:5"
+  md-gutter="12px" md-gutter-gt-sm="8px" layout-margin>
+  
+  <md-grid-tile ng-repeat="r in rated" class="gray md-whiteframe-z1"
+    md-rowspan="1" 
+    md-colspan="1"
+    style="background:url('https://storage.googleapis.com/gcp-recommendation-images/{{ r.type }}-{{ r.id }}.jpg');background-position:center;">
+
+    <md-grid-tile-footer class="mgtf" layout-padding>
+      <div layout="row">
+        <div flex class="mse-p">{{r.title}}</div>
+      </div>
+
+      <div layout="row" layout-align="center center">
+        <div class="md-caption">You rated {{ r.rating }}</div>
+        <div flex>
+          <md-slider flex class="md-primary md-hue-3" md-discrete step="1" min="0" max="5" aria-label="rating" ng-model="r.rating"></md-slider>
+        </div>
+        <div>
+          <md-button class="md-raised">Rent</md-button>
+        </div>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+
+</md-grid-list>

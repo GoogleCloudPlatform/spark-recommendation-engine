@@ -1,0 +1,17 @@
+<md-content layout="column" flex class="md-padding" layout-align="start center">
+  <h2 class="md-display-1">Welcome back, Sam</h2>
+  <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in housing" md-item-text="item.title" md-floating-label="Search rentals">
+    <span md-highlight-text="searchText">{{item.title}}</span>
+  </md-autocomplete>
+  <p>
+    Here are some rentals that you might interested in
+  </p>
+  <md-content layout="row" layout-wrap layout-align="start center">
+    <div ng-repeat="item in recommendations" class="gray md-whiteframe-z1 recard" layout-margin
+     style="background:url('https://storage.googleapis.com/<YOUR_IMAGE_BUCKET>/{{ item.type }}-{{ item.id }}.jpg');background-position:center;"
+     layout="column" layout-align="center center"
+    >
+      <md-button>{{ item.title }}</md-button>
+    </div>
+  </md-content>
+</md-content>

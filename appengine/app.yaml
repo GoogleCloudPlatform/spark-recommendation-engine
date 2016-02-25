@@ -1,0 +1,24 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+builtins:
+- remote_api: on
+
+handlers:
+- url: /app
+  static_dir: app
+- url: /
+  static_files: app/index.html
+  upload: app/index.html
+  secure: always
+- url: /rated
+  static_files: app/index.html
+  upload: app/index.html
+  secure: always
+- url: /api/.*
+  script: main.api
+
+libraries:
+- name: MySQLdb
+  version: "latest"
