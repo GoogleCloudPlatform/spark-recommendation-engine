@@ -1,5 +1,5 @@
 # Recommendation on Google Cloud Platform
-This tutorial shows how to run the code explained in the solution paper [Recommendation Engine on Google Cloud Platform](https://cloud.com/solutions/recommendations-using-machine-learning-on-compute-engine). In order to run this example fully you will need to use various components.
+This tutorial shows how to run the code explained in the solution paper [Recommendation Engine on Google Cloud Platform](https://cloud.google.com/solutions/recommendations-using-machine-learning-on-compute-engine). In order to run this example fully you will need to use various components.
 
 Disclaimer: This is not an official Google product.
 ## Setting up
@@ -78,7 +78,7 @@ After you [created and connected to an instance](https://cloud.google.com/sql/do
 ## Renting Website
 This [appengine](appengine) folder contains a simple html website built with [Python on App Engine](https://cloud.google.com/appengine/docs/python/) using [Angular Material](https://material.angularjs.org). While it is not required to deploy this website, it gives an idea on what a recommendation display could look like in a production environment.
 
-You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip) and upload them to your own bucket to display them. Remember to update the <YOUR_IMAGE_BUCKET> in [app/template/welcome.html](app/template/welcome.html) page
+You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip) and upload them to your own bucket to display them. Remember to update the <YOUR_IMAGE_BUCKET> in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page
 
 ## Recommendation scripts
 The main part of this solution paper is explained on the Google Cloud Platform [solutions](https://cloud.google.com/solutions) page. In the pyspark [folder](pyspark), you will find the scripts mentionned in the [solution paper](https://cloud.com/solutions/recommendations-using-machine-learning-on-compute-engine):
