@@ -2,6 +2,8 @@
 
 This tutorial shows how to run the code explained in the solution paper [Recommendation Engine on Google Cloud Platform](https://cloud.google.com/solutions/recommendations-using-machine-learning-on-compute-engine). In order to run this example fully you will need to use various components.
 
+Disclaimer: This is not an official Google product.
+
 ## Setting up
 
 ### Before you begin
