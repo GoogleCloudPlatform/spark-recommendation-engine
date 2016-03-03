@@ -82,7 +82,7 @@ To be make sure your Spark cluster can access your Cloud SQL database, you must:
 ## Example data
 ### Cloud SQL Data
 
-After you [create and connecte to an instance](https://cloud.google.com/sql/docs/getting-started), you need to create some tables and load data into some of them by following these steps:
+After you [create and connect to an instance](https://cloud.google.com/sql/docs/getting-started), you need to create some tables and load data into some of them by following these steps:
 
 1. Connect to your project Cloud SQL instance through the Cloud Console.
 2. Create the database and tables as explained [here](https://cloud.google.com/sql/docs/import-export?hl=en#import-database), using the provided [sql script](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/sql/table_creation.sql). In the Cloud Storage file input, enter `solutions-public-assets/recommendation-spark/sql/table_creation.sql`.
