@@ -71,9 +71,9 @@ spark.executor.extraClassPath /usr/share/java/mysql-connector-java-x.x.xx-bin.ja
 Set up a cluster with the default parameters as explained in the Cloud Dataproc documentation on [how to create a cluster](https://cloud.google.com/dataproc/create-cluster).
 Cloud Dataproc does not require you to setup the JDBC connector.
 
-### Create and Configure Google Cloud SQL Access
+### Create and Configure Google Cloud SQL (First Generation) Access
 
-Follow [these instructions](https://cloud.google.com/sql/docs/getting-started?hl=en#create) to create a Cloud SQL instance. 
+Follow [these instructions](https://cloud.google.com/sql/docs/getting-started?hl=en#create) to create a Cloud SQL instance. We will use a Cloud SQL first generation in this example.
 To be make sure your Spark cluster can access your Cloud SQL database, you must:
 
 * Whitelist the IPs of the nodes as explained in the [Cloud SQL documentation](https://cloud.google.com/sql/docs/access-control#appaccess). You can find the instances' IPs by going to **Compute Engine** -> **VM Instances** in the Cloud Console. There you should see a number of instances (based on your cluster size) with names like *cluster*-m, *cluster*-w-*i* where `cluster` is the name of your cluster and `i` is a slave number.
