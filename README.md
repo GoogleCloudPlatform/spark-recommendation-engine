@@ -78,6 +78,7 @@ To be make sure your Spark cluster can access your Cloud SQL database, you must:
 
 * Whitelist the IPs of the nodes as explained in the [Cloud SQL documentation](https://cloud.google.com/sql/docs/external#appaccessIP). You can find the instances' IPs by going to **Compute Engine** -> **VM Instances** in the Cloud Console. There you should see a number of instances (based on your cluster size) with names like *cluster*-m, *cluster*-w-*i* where `cluster` is the name of your cluster and `i` is a slave number.
 * [Create an IPv4 address](https://cloud.google.com/sql/docs/access-control#appaccess) so the Cloud SQL instance can be accessed through the network.
+* [Create a non-root user account] Make sure that this user account can connect from the IPs corresponding to the Dataproc cluster (not just localhost)
 
 ## Example data
 ### Cloud SQL Data
@@ -94,7 +95,7 @@ After you [create and connect to an instance](https://cloud.google.com/sql/docs/
 
 The [appengine](appengine) folder contains a simple HTML website built with [Python on App Engine](https://cloud.google.com/appengine/docs/python/) using [Angular Material](https://material.angularjs.org). While it is not required to deploy this website, it can give you an idea of what a recommendation display could look like in a production environment.
 
-You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload them to your own bucket to display them. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
+You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload the individual files to your own bucket and change their acl to be public in order to serve them out. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
 
 
 ## Recommendation scripts
