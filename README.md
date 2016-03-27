@@ -95,6 +95,8 @@ After you [create and connect to an instance](https://cloud.google.com/sql/docs/
 
 The [appengine](appengine) folder contains a simple HTML website built with [Python on App Engine](https://cloud.google.com/appengine/docs/python/) using [Angular Material](https://material.angularjs.org). While it is not required to deploy this website, it can give you an idea of what a recommendation display could look like in a production environment.
 
+Make sure to update your database values in the [main.py](appengine/app/main.py) file to match your setup. If you kept the values of the .sql script, <_DB_NAME> = 'recommendation_spark'
+
 You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload the individual files to your own bucket and change their acl to be public in order to serve them out. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
 
 

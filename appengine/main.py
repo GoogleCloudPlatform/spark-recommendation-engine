@@ -21,9 +21,10 @@ import json
 import MySQLdb
 
 # Define your production Cloud SQL instance information.
-#_INSTANCE_NAME = 'your-project-id:your-instance-name'
-_INSTANCE_NAME = 'mm-sareco:sa-papers'
-_DB_NAME = 'recommendation'
+_INSTANCE_NAME = '<YOUR-PROJECT_ID>:<YOUR-INSTANCE-NAME>'
+_DB_NAME = '<YOUR-DB-NAME>'
+_DB_USER = '<YOUR-DB-USER>'
+_DB_PASS = '<YOUR-DB-PASS>'
 _USER_ID = str(0)
 
 
@@ -32,7 +33,7 @@ class GetRatedHandler(webapp2.RequestHandler):
   
   def post(self):
     # Connect to your DB
-    db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user='root', charset='utf8')
+    db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user=_DB_USER, passwd=_DB_PASS, charset='utf8')
 
     # Fetch the recommendations
     cursor = db.cursor()
@@ -67,7 +68,7 @@ class GetRecommendationHandler(webapp2.RequestHandler):
   
   def post(self):
     # Connect to your DB
-    db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user='root', charset='utf8')
+    db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user=_DB_USER, passwd=_DB_PASS, charset='utf8')
 
     # Fetch the recommendations
     cursor = db.cursor()
