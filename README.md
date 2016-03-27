@@ -78,7 +78,7 @@ To be make sure your Spark cluster can access your Cloud SQL database, you must:
 
 * Whitelist the IPs of the nodes as explained in the [Cloud SQL documentation](https://cloud.google.com/sql/docs/external#appaccessIP). You can find the instances' IPs by going to **Compute Engine** -> **VM Instances** in the Cloud Console. There you should see a number of instances (based on your cluster size) with names like *cluster*-m, *cluster*-w-*i* where `cluster` is the name of your cluster and `i` is a slave number.
 * [Create an IPv4 address](https://cloud.google.com/sql/docs/access-control#appaccess) so the Cloud SQL instance can be accessed through the network.
-* [Create a non-root user account] Make sure that this user account can connect from the IPs corresponding to the Dataproc cluster (not just localhost)
+* Create a non-root user account. Make sure that this user account can connect from the IPs corresponding to the Dataproc cluster (not just localhost)
 
 ## Example data
 ### Cloud SQL Data
