@@ -38,7 +38,7 @@ USER_ID = 0
 #BEST_REGULATION = 0.1
 
 CLOUDSQL_INSTANCE_IP = sys.argv[1]
-CLOUDSQL_NAME = sys.argv[2]
+CLOUDSQL_DB_NAME = sys.argv[2]
 CLOUDSQL_USER = sys.argv[3]
 CLOUDSQL_PWD  = sys.argv[4]
 
@@ -54,7 +54,7 @@ TABLE_RECOMMENDATIONS = "Recommendation"
 # Create dataframes
 #[START read_from_sql]
 jdbcDriver = 'com.mysql.jdbc.Driver'
-jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
+jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_DB_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
 dfAccos = sqlContext.load(source='jdbc', driver=jdbcDriver, url=jdbcUrl, dbtable=TABLE_ITEMS)
 dfRates = sqlContext.load(source='jdbc', driver=jdbcDriver, url=jdbcUrl, dbtable=TABLE_RATINGS)
 #[END read_from_sql]

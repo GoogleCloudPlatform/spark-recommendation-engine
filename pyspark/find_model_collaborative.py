@@ -25,7 +25,7 @@ from pyspark.mllib.recommendation import ALS, MatrixFactorizationModel, Rating
 
 
 CLOUDSQL_INSTANCE_IP = sys.argv[1]
-CLOUDSQL_NAME = sys.argv[2]
+CLOUDSQL_DB_NAME = sys.argv[2]
 CLOUDSQL_USER = sys.argv[3]
 CLOUDSQL_PWD  = sys.argv[4]
 
@@ -34,7 +34,7 @@ sc = SparkContext(conf=conf)
 sqlContext = SQLContext(sc)
 
 jdbcDriver = 'com.mysql.jdbc.Driver'
-jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
+jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_DB_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
 
 #[START how_far]
 def howFarAreWe(model, against, sizeAgainst):
