@@ -53,14 +53,13 @@ TABLE_RECOMMENDATIONS = "Recommendation"
 # Read the data from the Cloud SQL
 # Create dataframes
 #[START read_from_sql]
-jdbcDriver = 'com.mysql.jdbc.Driver'
 jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_DB_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
-dfAccos = sqlContext.load(source='jdbc', driver=jdbcDriver, url=jdbcUrl, dbtable=TABLE_ITEMS)
-dfRates = sqlContext.load(source='jdbc', driver=jdbcDriver, url=jdbcUrl, dbtable=TABLE_RATINGS)
+dfAccos = sqlContext.read.jdbc(url=jdbcUrl, table=TABLE_ITEMS)
+dfRates = sqlContext.read.jdbc(url=jdbcUrl, table=TABLE_RATINGS)
 #[END read_from_sql]
 
 # Get all the ratings rows of our user
-dfUserRatings  = dfRates.filter(dfRates.userId == USER_ID).map(lambda r: r.accoId).collect()
+dfUserRatings  = dfRates.filter(dfRates.userId == USER_ID).rdd.map(lambda r: r.accoId).collect()
 print(dfUserRatings)
 
 # Returns only the accommodations that have not been rated by our user
