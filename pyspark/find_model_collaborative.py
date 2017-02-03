@@ -33,7 +33,6 @@ conf = SparkConf().setAppName("app_collaborative")
 sc = SparkContext(conf=conf)
 sqlContext = SQLContext(sc)
 
-jdbcDriver = 'com.mysql.jdbc.Driver'
 jdbcUrl    = 'jdbc:mysql://%s:3306/%s?user=%s&password=%s' % (CLOUDSQL_INSTANCE_IP, CLOUDSQL_DB_NAME, CLOUDSQL_USER, CLOUDSQL_PWD)
 
 #[START how_far]
@@ -57,7 +56,7 @@ def howFarAreWe(model, against, sizeAgainst):
 
 # Read the data from the Cloud SQL
 # Create dataframes
-dfRates = sqlContext.load(source='jdbc', driver=jdbcDriver, url=jdbcUrl, dbtable='Rating')
+dfRates = sqlContext.read.jdbc(url=jdbcUrl, table='Rating')
 
 rddUserRatings = dfRates.filter(dfRates.userId == 0).rdd
 print(rddUserRatings.count())
