@@ -30,7 +30,7 @@ _USER_ID = str(0)
 
 # Returns a list of the accommodation that the user already rated
 class GetRatedHandler(webapp2.RequestHandler):
-  
+
   def post(self):
     # Connect to your DB
     db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user=_DB_USER, passwd=_DB_PASS, charset='utf8')
@@ -65,7 +65,7 @@ class GetRatedHandler(webapp2.RequestHandler):
 
 # Returns a list of the recommendations for the user previously recorded by the recommendation engine
 class GetRecommendationHandler(webapp2.RequestHandler):
-  
+
   def post(self):
     # Connect to your DB
     db = MySQLdb.connect(unix_socket='/cloudsql/' + _INSTANCE_NAME, db=_DB_NAME, user=_DB_USER, passwd=_DB_PASS, charset='utf8')

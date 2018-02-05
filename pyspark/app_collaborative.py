@@ -33,10 +33,6 @@ sc.setCheckpointDir('checkpoint/')
 sqlContext = SQLContext(sc)
 
 USER_ID = 0
-#CLOUDSQL_INSTANCE_IP = 173.194.251.148
-#BEST_RANK = 20
-#BEST_ITERATION = 10
-#BEST_REGULATION = 0.1
 
 CLOUDSQL_INSTANCE_IP = sys.argv[1]
 CLOUDSQL_DB_NAME = sys.argv[2]

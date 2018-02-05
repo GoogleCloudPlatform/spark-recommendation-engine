@@ -41,7 +41,7 @@ Follow these steps to set up Apache Spark:
   b. PROJECT="your-project"  
 3. Deploy your cluster and log into the Hadoop master instance.
 
-```sh
+```
 ./bdutil deploy -e extensions/spark/spark_env.sh
 ./bdutil shell
 ```
@@ -62,7 +62,7 @@ Because each worker needs to access the data, download the JDBC connector onto e
 1. Download the connector to `/usr/share/java`.
 2. Add the following lines to `/home/hadoop/spark-install/conf/spark-defaults.conf`. Don't forget to replace the names of the JAR files with the correct version.
 
-```sh
+```
 spark.driver.extraClassPath /usr/share/java/mysql-connector-java-x.x.xx-bin.jar
 spark.executor.extraClassPath /usr/share/java/mysql-connector-java-x.x.xx-bin.jar
 ```
@@ -95,6 +95,12 @@ After you [create and connect to an instance](https://cloud.google.com/sql/docs/
 
 The [appengine](appengine) folder contains a simple HTML website built with [Python on App Engine](https://cloud.google.com/appengine/docs/python/) using [Angular Material](https://material.angularjs.org). While it is not required to deploy this website, it can give you an idea of what a recommendation display could look like in a production environment.
 
+From the [appengine](/appengine) folder you can run
+
+```
+gcloud app deploy --project [YOUR-PROJECT-ID]
+```
+
 Make sure to update your database values in the [main.py](appengine/main.py) file to match your setup. If you kept the values of the .sql script, _DB_NAME = 'recommendation_spark'. The rest will be specific to your setup.
 
 You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload the individual files to your own bucket and change their acl to be public in order to serve them out. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
@@ -114,20 +120,20 @@ Both scripts should be run in a Spark cluster. This can be done on  Cloud Platfo
 
 There are two ways to run code in Spark: through the command line or by loading a Python file. In this case, it's easier to use the Python file to avoid writing each line of code into the CLI. Remember to pass the path to the JDBC JAR file as a parameter so it can be used by the `sqlContext.load` function.
 
-```sh
+```
 $ spark-submit \
   --driver-class-path mysql-connector-java-x.x.xx-bin.jar \
   --jars mysql-connector-java-x.x.xx-bin.jar \
   find_model_collaborative.py \
   <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_INSTANCE_NAME> \
+  <YOUR_CLOUDSQL_DB_NAME> \
   <YOUR_CLOUDSQL_USER> \
   <YOUR_CLOUDSQL_PASSWORD>
 ```
 
 #### Using Dataproc
 
-Dataproc already has the connector enabled so there is no need to set it up. 
+Dataproc already has the connector enabled so there is no need to set it up.
 
 The easiest way is to use the Cloud Console and run the script directly from a remote location (Cloud Storage for example). See the [documentation](https://cloud.google.com/dataproc/submit-job#using_the_console_name).
 
@@ -135,12 +141,12 @@ The easiest way is to use the Cloud Console and run the script directly from a r
 
 It is also possible to run this command line from a local computer:
 
-```sh
-$ gcloud beta dataproc jobs submit pyspark \
+```
+$ gcloud dataproc jobs submit pyspark \
   --cluster <YOUR_DATAPROC_CLUSTER_NAME> \
   find_model_collaborative.py \
-  <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_INSTANCE_NAME> \
+  -- <YOUR_CLOUDSQL_INSTANCE_IP> \
+  <YOUR_CLOUDSQL_DB_NAME> \
   <YOUR_CLOUDSQL_USER> \
   <YOUR_CLOUDSQL_PASSWORD>
 ```
@@ -153,7 +159,7 @@ The script above returns a combination of the best parameters for the ALS traini
 
 After you have those values, you can reuse them when calling the recommendation script.
 
-```sh
+```
 # Build our model with the best found values
 model = ALS.train(rddTraining, BEST_RANK, BEST_ITERATION, BEST_REGULATION)
 ```
@@ -165,13 +171,13 @@ Run the `app_collaborative.py` file with the updated values as you did before. T
 
 #### Using bdutil on the master
 
-```sh
+```
 $ spark-submit \
   --driver-class-path mysql-connector-java-5.1.36-bin.jar \
   --jars mysql-connector-java-5.1.36-bin.jar \
   app_collaborative.py \
   <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_INSTANCE_NAME> \
+  <YOUR_CLOUDSQL_DB_NAME> \
   <YOUR_CLOUDSQL_USER> \
   <YOUR_CLOUDSQL_PASSWORD> \
   <YOUR_BEST_RANK> \
@@ -182,12 +188,12 @@ $ spark-submit \
 
 You can use the Cloud Console, as explained before, which would be equivalent of running the following script from your local computer.
 
-```sh
-$ gcloud beta dataproc jobs submit pyspark \
+```
+$ gcloud dataproc jobs submit pyspark \
   --cluster <YOUR_DATAPROC_CLUSTER_NAME> \
   app_collaborative.py \
-  <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_INSTANCE_NAME> \
+  -- <YOUR_CLOUDSQL_INSTANCE_IP> \
+  <YOUR_CLOUDSQL_DB_NAME> \
   <YOUR_CLOUDSQL_USER> \
   <YOUR_CLOUDSQL_PASSWORD> \
   <YOUR_BEST_RANK> \
@@ -200,16 +206,22 @@ $ gcloud beta dataproc jobs submit pyspark \
 
 The code posted in GitHub prints the top 5 predictions. You should see something similar to a list of tuples, including `userId`, `accoId`, and `prediction`:
 
-```sh
+```
 [('0', '75', 4.6428704512729375), ('0', '76', 4.54325166163637), ('0', '86', 4.529177571208829), ('0', '66', 4.52387350189572), ('0', '99', 4.44705391172443)]
 ```  
 #### Display the top recommendations saved in the Database
 
+To easily access a MySql CLI, you can use [Cloud Shell](https://cloud.google.com/shell/docs/quickstart) and type the following command line then enter your database password.
+
+```
+gcloud sql connect <YOUR_CLOUDSQL_INSTANCE_NAME>  --user=<YOUR_CLOUDSQL_USER>
+```
+
 Running the following SQL query on the database will return the predictions saved in the `Recommendation` table by `app_collaborative.py`:
 
-```sh
-SELECT 
-  id, title, type, r.prediction 
+```
+SELECT
+  id, title, type, r.prediction
 FROM
   Accommodation a
 INNER JOIN
@@ -218,6 +230,6 @@ ON
  r.accoId = a.id
 WHERE
   r.userId = <USER_ID>
-ORDER BY 
+ORDER BY
   r.prediction desc
 ```
