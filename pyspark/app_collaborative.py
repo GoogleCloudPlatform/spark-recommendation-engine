@@ -29,6 +29,7 @@ from pyspark.sql.types import FloatType
 
 conf = SparkConf().setAppName("app_collaborative")
 sc = SparkContext(conf=conf)
+sc.setCheckpointDir('checkpoint/')
 sqlContext = SQLContext(sc)
 
 USER_ID = 0
