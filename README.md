@@ -24,48 +24,8 @@ The main steps involved in this example are:
 5. Run a Python script making a prediction using the best model.
 6. Saving the predictions into Cloud SQL so the user can see them when displaying the welcome page.
 
-Cloud Platform offers various ways to deploy a Hadoop cluster to use Spark. This solution describes two ways:
+The recommended approach to run Spark on Google Cloud Platform is to use [Google Cloud Dataproc](https://cloud.google.com/dataproc). Dataproc is a managed service that facilitates common tasks such as cluster deployment, jobs submissions, cluster scale and nodes monitoring. Interaction with Dataproc can be done over a UI, CLI or API.
 
-* Using [bdutil](https://cloud.google.com/hadoop/bdutil), a command line tool that simplifies the cluster creation, deployment and the connectivity to Cloud Platform
-* Using [Google Cloud Dataproc](https://cloud.google.com/dataproc), a managed service that makes running your custom code seamless thanks to its easy way to create a cluster, deploy Hadoop, connect to Cloud Platform components, submit jobs, scale the cluster, and monitor the nodes. Cloud Dataproc does all that through a web user interface.
-
-The quickest and easiest way is to use Cloud Dataproc.
-
-### Setup using bdutil
-#### Cluster
-Follow these steps to set up Apache Spark:
-
-1. Download `bdutil` from https://cloud.google.com/hadoop/downloads.
-2. Change your environment values [as described in the documentation](https://cloud.google.com/hadoop/bdutil):  
-  a. CONFIGBUCKET="your_root_bucket_name"  
-  b. PROJECT="your-project"  
-3. Deploy your cluster and log into the Hadoop master instance.
-
-```
-./bdutil deploy -e extensions/spark/spark_env.sh
-./bdutil shell
-```
-
-Notes :
-
-* Using the `bdutil` shell is equivalent to using the SSH command-line interface to connect to the instance.
-* `bdutil` uses Google Cloud Storage as a file system, which means that all references to files are relative to the `CONFIGBUCKET` folder.
-
-#### Setup the JDBC connector on the master
-
-In order to be able to call the Python application file with the connector, download the [JDBC connector](http://dev.mysql.com/downloads/connector/j/) to your working folder on the master instance. After you install it, you can use the connector when calling the Python file through the `spark-submit` command line.
-
-#### Setup the JDBC on each worker
-
-Because each worker needs to access the data, download the JDBC connector onto each instance:
-
-1. Download the connector to `/usr/share/java`.
-2. Add the following lines to `/home/hadoop/spark-install/conf/spark-defaults.conf`. Don't forget to replace the names of the JAR files with the correct version.
-
-```
-spark.driver.extraClassPath /usr/share/java/mysql-connector-java-x.x.xx-bin.jar
-spark.executor.extraClassPath /usr/share/java/mysql-connector-java-x.x.xx-bin.jar
-```
 ### Setup using Cloud Dataproc
 
 Set up a cluster with the default parameters as explained in the Cloud Dataproc documentation on [how to create a cluster](https://cloud.google.com/dataproc/create-cluster).
@@ -113,27 +73,10 @@ The main part of this solution paper is explained on the [Cloud Platform solutio
 * [find_model_collaborative.py](pyspark/find_model_collaborative.py)
 * [app_collaborative.py](pyspark/app_collaborative.py)
 
-Both scripts should be run in a Spark cluster. This can be done on  Cloud Platform either by using Cloud Dataproc or `bdutil`.
+Both scripts should be run in a Spark cluster. This can be done by using Cloud Dataproc.
 
 ### Find the best model
-#### Using bdutil on the master node
-
-There are two ways to run code in Spark: through the command line or by loading a Python file. In this case, it's easier to use the Python file to avoid writing each line of code into the CLI. Remember to pass the path to the JDBC JAR file as a parameter so it can be used by the `sqlContext.load` function.
-
-```
-$ spark-submit \
-  --driver-class-path mysql-connector-java-x.x.xx-bin.jar \
-  --jars mysql-connector-java-x.x.xx-bin.jar \
-  find_model_collaborative.py \
-  <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_DB_NAME> \
-  <YOUR_CLOUDSQL_USER> \
-  <YOUR_CLOUDSQL_PASSWORD>
-```
-
-#### Using Dataproc
-
-Dataproc already has the connector enabled so there is no need to set it up.
+Dataproc already has the MySQL connector enabled so there is no need to set it up.
 
 The easiest way is to use the Cloud Console and run the script directly from a remote location (Cloud Storage for example). See the [documentation](https://cloud.google.com/dataproc/submit-job#using_the_console_name).
 
@@ -168,23 +111,6 @@ Where, in our current case, BEST_RANK=15,  BEST_ITERATION=20,  BEST_REGULATION=0
 ### Make the prediction
 
 Run the `app_collaborative.py` file with the updated values as you did before. The code  makes a prediction and saves the top 5 expected rates in Cloud SQL. You can look at the results later.
-
-#### Using bdutil on the master
-
-```
-$ spark-submit \
-  --driver-class-path mysql-connector-java-5.1.36-bin.jar \
-  --jars mysql-connector-java-5.1.36-bin.jar \
-  app_collaborative.py \
-  <YOUR_CLOUDSQL_INSTANCE_IP> \
-  <YOUR_CLOUDSQL_DB_NAME> \
-  <YOUR_CLOUDSQL_USER> \
-  <YOUR_CLOUDSQL_PASSWORD> \
-  <YOUR_BEST_RANK> \
-  <YOUR_BEST_ITERATION> \
-  <YOUR_BEST_REGULATION>
-```
-#### Using Cloud Dataproc
 
 You can use the Cloud Console, as explained before, which would be equivalent of running the following script from your local computer.
 
