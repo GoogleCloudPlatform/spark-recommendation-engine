@@ -63,7 +63,7 @@ gcloud app deploy --project [YOUR-PROJECT-ID]
 
 Make sure to update your database values in the [main.py](appengine/main.py) file to match your setup. If you kept the values of the .sql script, _DB_NAME = 'recommendation_spark'. The rest will be specific to your setup.
 
-You can find some accomodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload the individual files to your own bucket and change their acl to be public in order to serve them out. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
+You can find some accommodation images [here](https://storage.googleapis.com/solutions-public-assets/recommendation-spark/imgs/images.zip). Upload the individual files to your own bucket and change their acl to be public in order to serve them out. Remember to replace `<YOUR_IMAGE_BUCKET>` in [appengine/app/templates/welcome.html](appengine/app/templates/welcome.html) page with your bucket.
 
 
 ## Recommendation scripts
